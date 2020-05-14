@@ -1,7 +1,7 @@
 import 'package:moor/moor.dart';
 
-import 'model.dart';
-import 'moor_database.dart';
+import '../models/model.dart';
+import '../database/moor_database.dart';
 
 part 'dao.g.dart';
 

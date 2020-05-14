@@ -5,7 +5,7 @@ import 'package:moor_ffi/moor_ffi.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 
-import 'model.dart';
+import '../models/model.dart';
 
 part 'moor_database.g.dart';
 
