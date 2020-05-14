@@ -31,12 +31,17 @@ LazyDatabase _openConnection() {
 
 // this annotation tells moor to prepare a database class that uses both of the
 // tables we just defined. We'll see how to use that database class in a moment.
-@UseMoor(tables: [Tasks])
+@UseMoor(tables: [Tasks], daos: [TaskDao])
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 
   @override
   int get schemaVersion => 1;
+}
+
+@UseDao(tables: [Tasks])
+class TaskDao extends DatabaseAccessor<AppDatabase> with _$TaskDaoMixin {
+  TaskDao(AppDatabase attachedDatabase) : super(attachedDatabase);
 
   Future<List<Task>> getAllTasks() => select(tasks).get();
   Stream<List<Task>> watchAllTasks() => select(tasks).watch();
