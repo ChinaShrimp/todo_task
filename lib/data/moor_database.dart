@@ -41,7 +41,9 @@ class AppDatabase extends _$AppDatabase {
 
 @UseDao(tables: [Tasks])
 class TaskDao extends DatabaseAccessor<AppDatabase> with _$TaskDaoMixin {
-  TaskDao(AppDatabase attachedDatabase) : super(attachedDatabase);
+  final AppDatabase db;
+
+  TaskDao(this.db) : super(db);
 
   Future<List<Task>> getAllTasks() => select(tasks).get();
   Stream<List<Task>> watchAllTasks() => select(tasks).watch();
@@ -50,11 +52,12 @@ class TaskDao extends DatabaseAccessor<AppDatabase> with _$TaskDaoMixin {
     return (select(tasks)
       ..orderBy([
         (t) => OrderingTerm(expression: t.title, mode: OrderingMode.desc),
+        (t) => OrderingTerm(expression: t.dueDate, mode: OrderingMode.desc),
       ])
       ..where((t) => t.completed)).watch();
   }
 
-  Future<int> insertTask(Task task) => into(tasks).insert(task);
-  Future<bool> updateTask(Task task) => update(tasks).replace(task);
-  Future<int> deleteTask(Task task) => delete(tasks).delete(task);
+  Future<int> insertTask(Insertable<Task> task) => into(tasks).insert(task);
+  Future<bool> updateTask(Insertable<Task> task) => update(tasks).replace(task);
+  Future<int> deleteTask(Insertable<Task> task) => delete(tasks).delete(task);
 }

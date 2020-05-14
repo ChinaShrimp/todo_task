@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:moor/moor.dart';
 import 'package:provider/provider.dart';
 
 import '../../data/moor_database.dart';
@@ -43,9 +44,9 @@ class _NewTaskInputState extends State<NewTaskInput> {
         decoration: InputDecoration(hintText: 'Task Name'),
         onSubmitted: (inputName) {
           final taskDao = context.read<TaskDao>(); // Provider.of<AppDatabase>(context);
-          final task = Task(
-            title: inputName,
-            dueDate: newTaskDate,
+          final task = TasksCompanion(
+            title: Value(inputName),
+            dueDate: Value(newTaskDate),
           );
           taskDao.insertTask(task);
           resetValuesAfterSubmit();
