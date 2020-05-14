@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:provider/provider.dart';
 
+import '../data/dao.dart';
 import '../data/moor_database.dart';
 import 'widget/new_task_input_widget.dart';
 
