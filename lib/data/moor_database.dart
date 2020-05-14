@@ -45,6 +45,15 @@ class TaskDao extends DatabaseAccessor<AppDatabase> with _$TaskDaoMixin {
 
   Future<List<Task>> getAllTasks() => select(tasks).get();
   Stream<List<Task>> watchAllTasks() => select(tasks).watch();
+
+  Stream<List<Task>> watchCompletedTasks() {
+    return (select(tasks)
+      ..orderBy([
+        (t) => OrderingTerm(expression: t.title, mode: OrderingMode.desc),
+      ])
+      ..where((t) => t.completed)).watch();
+  }
+
   Future<int> insertTask(Task task) => into(tasks).insert(task);
   Future<bool> updateTask(Task task) => update(tasks).replace(task);
   Future<int> deleteTask(Task task) => delete(tasks).delete(task);

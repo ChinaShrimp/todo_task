@@ -11,11 +11,16 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  bool completed = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           title: Text('Tasks'),
+          actions: [
+            _buildCompletedSwitch(context),
+          ],
         ),
         body: Column(
           children: <Widget>[
@@ -28,7 +33,7 @@ class _HomePageState extends State<HomePage> {
   StreamBuilder<List<Task>> _buildTaskList(BuildContext context) {
     final taskDao = Provider.of<TaskDao>(context);
     return StreamBuilder(
-      stream: taskDao.watchAllTasks(),
+      stream: completed ? taskDao.watchCompletedTasks() : taskDao.watchAllTasks(),
       builder: (context, AsyncSnapshot<List<Task>> snapshot) {
         final tasks = snapshot.data ?? List();
 
@@ -63,5 +68,12 @@ class _HomePageState extends State<HomePage> {
         },
       ),
     );
+  }
+
+  Widget _buildCompletedSwitch(BuildContext context) {
+    return Row(children: [
+      Text('Completed'),
+      Switch(value: completed, onChanged: (bool value) => setState(() => completed = value),),
+    ]);
   }
 }
